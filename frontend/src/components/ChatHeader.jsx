@@ -1,67 +1,92 @@
-import React, { useContext } from 'react'
-import { MsgContext } from '../context/msgContext';
-import { UserContext } from '../context/userContext.jsx';
-import { X } from "lucide-react";
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useContext } from "react";
+import { MsgContext } from "../context/msgContext";
+import { UserContext } from "../context/userContext.jsx";
+import { X, Phone, Video, Image as ImageIcon, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ChatHeader = () => {
-    const { selectedUser, setSelectedUser, clearChat } = useContext(MsgContext);
-    const { onlineUsers } = useContext(UserContext);
-    const navigate = useNavigate();
+  const { selectedUser, setSelectedUser, clearChat } = useContext(MsgContext);
+  const { onlineUsers } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  if (!selectedUser) return null;
+
+  const isOnline = onlineUsers.includes(selectedUser._id);
+  const avatarUrl =
+    selectedUser.profilepic ||
+    `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(
+      selectedUser.name || "user"
+    )}`;
 
   return (
-    <div className="p-3 border-b border-base-300 bg-white dark:bg-gray-800 dark:border-gray-700 flex items-center justify-between">
-      {/* Left: Avatar + user info */}
+    <div className="h-16 px-5 border-b border-[#1e2027] bg-[#131418] flex items-center justify-between select-none flex-shrink-0">
+      {/* Left: Avatar + Details */}
       <div className="flex items-center gap-3">
-        {/* Avatar */}
-        <div className="avatar">
-          <div className="w-10 h-10 rounded-full relative overflow-hidden border-2 border-gray-300 dark:border-gray-600">
-            <img
-              src={selectedUser.profilepic || "/avatar.png"}
-              alt={selectedUser.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
+        <div className="relative">
+          <img
+            src={avatarUrl}
+            alt={selectedUser.name}
+            className="w-10 h-10 rounded-full object-cover bg-[#22252c]"
+          />
+          <span
+            className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-[#131418] ${
+              isOnline ? "bg-emerald-500" : "bg-neutral-500"
+            }`}
+          />
         </div>
 
-        {/* User info */}
         <div>
-          <h3 className="font-medium text-gray-900 dark:text-white">{selectedUser.name}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {onlineUsers.includes(selectedUser._id) ? "Online" : "Offline"}
+          <h3 className="font-semibold text-sm text-white">{selectedUser.name}</h3>
+          <p className="text-xs text-[#717786]">
+            {isOnline ? "Active now" : "Offline"}
           </p>
         </div>
       </div>
 
-      {/* Right: Buttons */}
+      {/* Right: Actions */}
       <div className="flex items-center gap-2">
-        {/* Go to Media button */}
+        <button
+          className="p-2 text-[#7f8695] hover:text-white hover:bg-[#1d1f27] rounded-lg transition-colors"
+          title="Voice Call"
+        >
+          <Phone className="w-4 h-4" />
+        </button>
+
+        <button
+          className="p-2 text-[#7f8695] hover:text-white hover:bg-[#1d1f27] rounded-lg transition-colors"
+          title="Video Call"
+        >
+          <Video className="w-4 h-4" />
+        </button>
+
         <button
           onClick={() => navigate("/media")}
-          className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition"
+          className="p-2 text-[#7f8695] hover:text-white hover:bg-[#1d1f27] rounded-lg transition-colors"
+          title="Media Gallery"
         >
-          Media
+          <ImageIcon className="w-4 h-4" />
         </button>
 
         <button
-        onClick={() => clearChat()}
-          className="px-3 py-1 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition"
+          onClick={() => clearChat()}
+          className="p-2 text-[#7f8695] hover:text-red-400 hover:bg-[#1d1f27] rounded-lg transition-colors"
+          title="Clear Chat"
         >
-          clear chat
+          <Trash2 className="w-4 h-4" />
         </button>
 
+        <div className="w-[1px] h-5 bg-[#252833] mx-1" />
 
-        {/* Close chat button */}
         <button
           onClick={() => setSelectedUser(null)}
-          className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          className="p-2 text-[#7f8695] hover:text-white hover:bg-[#1d1f27] rounded-lg transition-colors"
+          title="Close Chat"
         >
-          <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+          <X className="w-4 h-4" />
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChatHeader
+export default ChatHeader;

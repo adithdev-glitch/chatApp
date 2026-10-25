@@ -63,15 +63,50 @@ export const sendMessage = async (req, res) => {
 
 
 export const getUsersForSidebar = async (req, res) => {
-    try {
-        const loggedInUserId = req.user.id;
-        const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } });
-        res.status(200).json(filteredUsers, { message: "Users fetched successfully" });
-      } catch (error) {
-        console.error("Error in getUsersForSidebar: ", error.message);
-        res.status(500).json({ error: "Internal server error" });
-      }
-}
+  try {
+    const loggedInUserId = req.user.id;
+    const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
+
+    const usersWithLastMsg = await Promise.all(
+      filteredUsers.map(async (u) => {
+        const lastMsg = await Message.findOne({
+          $or: [
+            { senderId: loggedInUserId, receiverId: u._id },
+            { senderId: u._id, receiverId: loggedInUserId },
+          ],
+        }).sort({ createdAt: -1 });
+
+        return {
+          ...u.toObject(),
+          lastMessage: lastMsg
+            ? {
+                text: lastMsg.text,
+                image: !!lastMsg.image,
+                senderId: lastMsg.senderId,
+                createdAt: lastMsg.createdAt,
+              }
+            : null,
+        };
+      })
+    );
+
+    // Sort contacts by latest message activity
+    usersWithLastMsg.sort((a, b) => {
+      const timeA = a.lastMessage?.createdAt
+        ? new Date(a.lastMessage.createdAt).getTime()
+        : 0;
+      const timeB = b.lastMessage?.createdAt
+        ? new Date(b.lastMessage.createdAt).getTime()
+        : 0;
+      return timeB - timeA;
+    });
+
+    res.status(200).json(usersWithLastMsg);
+  } catch (error) {
+    console.error("Error in getUsersForSidebar: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 export const getChatImages = async (req, res) => {
   const userId = req.params.userId; 

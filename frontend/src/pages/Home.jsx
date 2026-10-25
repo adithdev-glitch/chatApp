@@ -1,32 +1,45 @@
-// import { MsgContext } from "../context/msgContext.jsx";
+import React, { useContext, useState } from "react";
+import NavRail from "../components/NavRail";
 import Sidebar from "../components/Sidebar";
+import MainTopBar from "../components/MainTopBar";
 import NoChatSelected from "../components/NoChatSelected";
 import ChatContainer from "../components/ChatContainer";
-import { useContext } from "react";
 import { MsgContext } from "../context/msgContext";
-import Navbar from "../pages/Navbar.jsx";
+import toast from "react-hot-toast";
 
 const HomePage = () => {
-  const { selectedUser } = useContext(MsgContext);
-  
+  const { selectedUser, setSelectedUser } = useContext(MsgContext);
+  const [activeNavTab, setActiveNavTab] = useState("chat");
+
+  const handleInvite = () => {
+    navigator.clipboard?.writeText(window.location.origin);
+    toast.success("Invite link copied to clipboard!");
+  };
 
   return (
-    <>
-    <Navbar />
-    <div className="h-screen bg-base-200">
-      <div className="flex items-center justify-center pt-20 px-4">
-        <div className="bg-base-100 rounded-lg shadow-cl w-full max-w-6xl h-[calc(100vh-8rem)]">
-          <div className="flex h-full rounded-lg overflow-hidden">
-            <Sidebar />
+    <div className="h-screen w-screen overflow-hidden flex bg-[#131418] text-white font-sans antialiased">
+      {/* 1. Left Nav Rail (Icons) */}
+      <NavRail activeTab={activeNavTab} setActiveTab={setActiveNavTab} />
 
-            {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
+      {/* 2. Conversations Sidebar */}
+      <Sidebar />
 
+      {/* 3. Main Chat View / Empty State */}
+      <main className="flex-1 h-full flex flex-col min-w-0 bg-[#131418] overflow-hidden">
+        {/* Top Header */}
+        <MainTopBar onNewChat={() => setSelectedUser(null)} />
 
-          </div>
+        {/* Dynamic Center Area */}
+        <div className="flex-1 h-[calc(100%-4rem)] min-w-0 flex flex-col overflow-hidden">
+          {!selectedUser ? (
+            <NoChatSelected onInvite={handleInvite} />
+          ) : (
+            <ChatContainer />
+          )}
         </div>
-      </div>
+      </main>
     </div>
-    </>
   );
 };
+
 export default HomePage;

@@ -6,7 +6,7 @@ import connectDB from './src/DB/db.js';
 import cors from 'cors';
 
 import { app, server } from "./src/middleware/Socket.js";
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
 
 app.use(express.json({ limit: "10mb" })); 

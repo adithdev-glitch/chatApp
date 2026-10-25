@@ -11,7 +11,7 @@ import MediaGallery from './components/MediaGallrey.jsx';
 const App = () => {
   const { isAuth} = useContext(UserContext);
   return (
-    <div className="min-h-screen bg-base-200 text-base-content dark:text-white dark:bg-gray-900">
+    <div className="min-h-screen bg-[#131418] text-white selection:bg-[#38bdf8] selection:text-black">
     <BrowserRouter>
     <Toaster position="top-center" reverseOrder={false} />
     <Routes>
