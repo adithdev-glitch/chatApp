@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import {io} from "socket.io-client"
+import { io } from "socket.io-client";
+import { SERVER_URL } from "../library/constants";
 
 export const UserContext = createContext();
 
@@ -10,11 +11,11 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [socket, setSocket] = useState(null);
-  const serverUrl = "http://localhost:8080";
+  const serverUrl = SERVER_URL;
 
   async function login(email, password, navigate) {
     try {
-      const { data } = await axios.post(`http://localhost:8080/api/user/login`, {
+      const { data } = await axios.post(`${SERVER_URL}/api/user/login`, {
         email,
         password,
       });
@@ -46,7 +47,7 @@ export const UserProvider = ({ children }) => {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/user/register", {
+      await axios.post(`${SERVER_URL}/api/user/register`, {
         name,
         email,
         password
@@ -61,7 +62,7 @@ export const UserProvider = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
   
-      const { data } = await axios.get(`http://localhost:8080/api/user/fetch-user`, {
+      const { data } = await axios.get(`${SERVER_URL}/api/user/fetch-user`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

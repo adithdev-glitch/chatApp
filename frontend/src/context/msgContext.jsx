@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { UserContext } from "./userContext";
+import { SERVER_URL } from "../library/constants";
 
 // Create context
 export const MsgContext = createContext();
@@ -23,7 +24,7 @@ export const MsgProvider = ({ children }) => {
   // Fetch all users except current user
   async function fetchUsers() {
     try {
-      const response = await axios.get("http://localhost:8080/api/message/users", {
+      const response = await axios.get(`${SERVER_URL}/api/message/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFilteresUser(response.data);
@@ -35,7 +36,7 @@ export const MsgProvider = ({ children }) => {
   // Load messages with a selected user
   const getMessages = async (userId) => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/message/${userId}`, {
+      const res = await axios.get(`${SERVER_URL}/api/message/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const newMap = new Map(res.data.map((m) => [m._id, m]));
@@ -64,7 +65,7 @@ export const MsgProvider = ({ children }) => {
 
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/message/send/${selectedUser._id}`,
+        `${SERVER_URL}/api/message/send/${selectedUser._id}`,
         { text, image },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -116,7 +117,7 @@ export const MsgProvider = ({ children }) => {
 
     try {
       await axios.delete(
-        `http://localhost:8080/api/message/clear/${selectedUser._id}`,
+        `${SERVER_URL}/api/message/clear/${selectedUser._id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessagesMap(new Map()); // Clear local messages

@@ -12,7 +12,7 @@ const NoChatSelected = ({ onInvite }) => {
 
         {/* Heading */}
         <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">
-          Welcome to Chathive!
+          Welcome to HeyChat!
         </h2>
 
         {/* Subtitle */}

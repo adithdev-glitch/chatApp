@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { SERVER_URL } from "../library/constants";
 
 const SearchBar = ({ onSelectUser }) => {
   const [query, setQuery] = useState("");
@@ -12,7 +13,7 @@ const SearchBar = ({ onSelectUser }) => {
 
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:8080/api/user/search?email=${query}`);
+      const res = await axios.get(`${SERVER_URL}/api/user/search?email=${query}`);
       setResults(res.data);
     } catch (err) {
       console.error("Search error:", err);

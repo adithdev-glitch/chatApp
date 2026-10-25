@@ -2,8 +2,7 @@ import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/userContext.jsx";
-import ChathiveLogo from "../components/ChathiveLogo.jsx";
-import { Mail, Lock, User, ArrowRight, Sparkles } from "lucide-react";
+import { User, Lock, Check } from "lucide-react";
 
 const Register = () => {
   const { login, register } = useContext(UserContext);
@@ -12,6 +11,8 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -33,126 +34,202 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#0d0e12] relative overflow-hidden px-4 select-none font-sans">
-      {/* Background ambient glowing gradients */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#38bdf8]/10 rounded-full blur-[130px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#0284c7]/10 rounded-full blur-[140px] pointer-events-none" />
+    <div className="w-screen h-screen min-h-screen flex flex-col md:flex-row overflow-hidden bg-white select-none font-sans">
+      {/* ================= LEFT SECTION (Full Page 50% Left: Blue Gradient with 3D Spheres) ================= */}
+      <div className="w-full md:w-1/2 h-full bg-gradient-to-br from-[#0066ff] via-[#0052cc] to-[#0039a6] relative overflow-hidden p-8 sm:p-12 md:p-16 lg:p-20 flex flex-col justify-center text-white flex-shrink-0">
+        {/* Top-Right Curved Sweep */}
+        <div
+          className="absolute -top-20 -right-28 w-[450px] h-[450px] lg:w-[540px] lg:h-[540px] rounded-full bg-[#0066ff] opacity-90 pointer-events-none"
+          style={{
+            boxShadow: "0 30px 80px rgba(0, 40, 150, 0.45)",
+          }}
+        />
 
-      {/* Main Container Card */}
-      <div className="w-full max-w-md bg-[#131418] border border-[#21242d] rounded-3xl p-8 sm:p-10 shadow-2xl relative z-10 flex flex-col items-center">
-        {/* Brand Icon & Heading */}
-        <div className="mb-6 flex flex-col items-center text-center">
-          <div className="w-16 h-16 rounded-2xl bg-[#191c24] border border-[#262b37] flex items-center justify-center mb-4 shadow-lg shadow-[#38bdf8]/10">
-            <ChathiveLogo className="w-10 h-10" color="#38bdf8" strokeWidth={4} />
-          </div>
+        {/* Bottom-Right Floating 3D Ball */}
+        <div
+          className="absolute bottom-8 right-[-30px] w-72 h-72 lg:w-96 lg:h-96 rounded-full pointer-events-none z-0"
+          style={{
+            background:
+              "radial-gradient(circle at 35% 35%, #38bdf8 0%, #0066ff 45%, #0033aa 75%, #001d66 100%)",
+            boxShadow: "-16px 25px 60px rgba(0, 15, 60, 0.5)",
+          }}
+        />
 
-          <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight flex items-center gap-2">
-            Chathive
+        {/* Bottom-Left Floating 3D Ball */}
+        <div
+          className="absolute -bottom-24 -left-20 w-64 h-64 lg:w-80 lg:h-80 rounded-full pointer-events-none z-0"
+          style={{
+            background:
+              "radial-gradient(circle at 35% 35%, #38bdf8 0%, #0066ff 45%, #0033aa 75%, #001d66 100%)",
+            boxShadow: "-12px 20px 50px rgba(0, 15, 60, 0.5)",
+          }}
+        />
+
+        {/* Content Over Spheres */}
+        <div className="relative z-10 max-w-lg">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-wider leading-tight">
+            WELCOME
           </h1>
-          <p className="text-xs sm:text-sm text-[#777e8f] mt-1.5">
-            {isLogin
-              ? "Welcome back! Enter your details to continue."
-              : "Create an account and start connecting today."}
+
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-widest mt-2 uppercase text-white/95">
+            HEYCHAT
+          </h2>
+
+          <p className="text-white/80 text-sm sm:text-base leading-relaxed mt-6 max-w-md">
+            Connect with friends, colleagues, and communities in real-time.
+            Experience seamless instant messaging with crystal clear clarity
+            and unmatched speed.
           </p>
         </div>
+      </div>
 
-        {/* Tab switch */}
-        <div className="w-full bg-[#191b22] p-1 rounded-xl flex items-center mb-6 border border-[#222631]">
-          <button
-            type="button"
-            onClick={() => setIsLogin(true)}
-            className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
-              isLogin
-                ? "bg-[#252934] text-white shadow"
-                : "text-[#6c7283] hover:text-gray-300"
-            }`}
-          >
-            Sign In
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsLogin(false)}
-            className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
-              !isLogin
-                ? "bg-[#252934] text-white shadow"
-                : "text-[#6c7283] hover:text-gray-300"
-            }`}
-          >
-            Register
-          </button>
-        </div>
+      {/* ================= RIGHT SECTION (Full Page 50% Right: Form) ================= */}
+      <div className="w-full md:w-1/2 h-full bg-white p-8 sm:p-12 md:p-16 lg:p-20 flex flex-col justify-center relative overflow-y-auto">
+        {/* Peeking 3D Sphere in Bottom-Right Corner of Screen */}
+        <div
+          className="absolute -bottom-20 -right-20 w-52 h-52 lg:w-64 lg:h-64 rounded-full pointer-events-none hidden sm:block z-0"
+          style={{
+            background:
+              "radial-gradient(circle at 35% 35%, #38bdf8 0%, #0066ff 50%, #0033aa 85%)",
+            boxShadow: "-12px 18px 45px rgba(0, 40, 150, 0.35)",
+          }}
+        />
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4">
-          {!isLogin && (
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-[#878e9f]">Full Name</label>
-              <div className="relative flex items-center">
-                <User className="w-4 h-4 text-[#5e6475] absolute left-3.5" />
+        <div className="relative z-10 w-full max-w-md mx-auto my-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#1e293b] tracking-tight">
+              {isLogin ? "Sign in" : "Sign up"}
+            </h2>
+            <p className="text-xs sm:text-sm text-[#94a3b8] mt-2">
+              {isLogin
+                ? "Welcome back to HeyChat! Enter your details to continue."
+                : "Join HeyChat and start connecting today."}
+            </p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {/* Full Name (Sign Up only) */}
+            {!isLogin && (
+              <div className="bg-[#f1f3f6] rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors focus-within:ring-2 focus-within:ring-[#0066ff]/20">
+                <User className="w-5 h-5 text-[#334155] flex-shrink-0" />
                 <input
                   type="text"
-                  placeholder="John Doe"
                   required
+                  placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-[#191b22] text-white text-sm pl-10 pr-4 py-2.5 rounded-xl border border-[#262a36] focus:outline-none focus:border-[#38bdf8] transition-colors placeholder-[#4e5464]"
+                  className="w-full bg-transparent text-sm text-[#1e293b] placeholder-[#94a3b8] focus:outline-none"
                 />
               </div>
-            </div>
-          )}
+            )}
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[#878e9f]">Email Address</label>
-            <div className="relative flex items-center">
-              <Mail className="w-4 h-4 text-[#5e6475] absolute left-3.5" />
+            {/* Email / Username Input */}
+            <div className="bg-[#f1f3f6] rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors focus-within:ring-2 focus-within:ring-[#0066ff]/20">
+              <User className="w-5 h-5 text-[#334155] flex-shrink-0" />
               <input
                 type="email"
-                placeholder="name@example.com"
                 required
+                placeholder="User Name or Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#191b22] text-white text-sm pl-10 pr-4 py-2.5 rounded-xl border border-[#262a36] focus:outline-none focus:border-[#38bdf8] transition-colors placeholder-[#4e5464]"
+                className="w-full bg-transparent text-sm text-[#1e293b] placeholder-[#94a3b8] focus:outline-none"
               />
             </div>
-          </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-[#878e9f]">Password</label>
-            <div className="relative flex items-center">
-              <Lock className="w-4 h-4 text-[#5e6475] absolute left-3.5" />
+            {/* Password Input with SHOW toggle */}
+            <div className="bg-[#f1f3f6] rounded-xl px-4 py-3.5 flex items-center gap-3 transition-colors focus-within:ring-2 focus-within:ring-[#0066ff]/20">
+              <Lock className="w-5 h-5 text-[#334155] flex-shrink-0" />
               <input
-                type="password"
-                placeholder="••••••••"
+                type={showPassword ? "text" : "password"}
                 required
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#191b22] text-white text-sm pl-10 pr-4 py-2.5 rounded-xl border border-[#262a36] focus:outline-none focus:border-[#38bdf8] transition-colors placeholder-[#4e5464]"
+                className="w-full bg-transparent text-sm text-[#1e293b] placeholder-[#94a3b8] focus:outline-none"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-xs font-bold text-[#003e7e] hover:text-[#0066ff] transition-colors uppercase tracking-wider flex-shrink-0 focus:outline-none"
+              >
+                {showPassword ? "HIDE" : "SHOW"}
+              </button>
             </div>
-          </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full mt-2 py-3 bg-[#38bdf8] hover:bg-[#0ea5e9] text-[#0f1115] font-semibold text-sm rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#38bdf8]/15 active:scale-[0.98] disabled:opacity-50"
-          >
-            <span>{isLogin ? "Sign In" : "Create Account"}</span>
-            <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-          </button>
-        </form>
+            {/* Remember me & Forgot Password */}
+            <div className="flex items-center justify-between text-xs text-[#64748b] mt-1">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <div
+                  onClick={() => setRememberMe(!rememberMe)}
+                  className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
+                    rememberMe
+                      ? "bg-[#003e7e] border-[#003e7e] text-white"
+                      : "border-[#94a3b8] bg-white"
+                  }`}
+                >
+                  {rememberMe && <Check className="w-3 h-3 stroke-[3]" />}
+                </div>
+                <span>Remember me</span>
+              </label>
 
-        {/* Footer Toggle text */}
-        <p className="text-xs text-[#6e7586] text-center mt-6">
-          {isLogin ? "Don't have an account yet?" : "Already registered?"}{" "}
-          <button
-            type="button"
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-[#38bdf8] hover:underline font-semibold ml-1 focus:outline-none"
-          >
-            {isLogin ? "Sign Up" : "Log In"}
-          </button>
-        </p>
+              <button
+                type="button"
+                onClick={() => toast("Password reset email sent!", { icon: "ℹ️" })}
+                className="text-[#0066ff] hover:underline font-medium focus:outline-none"
+              >
+                Forgot Password?
+              </button>
+            </div>
+
+            {/* Primary Sign In Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-2 py-3.5 bg-[#003e7e] hover:bg-[#002f60] active:scale-[0.99] text-white font-semibold text-sm rounded-xl transition-all shadow-md disabled:opacity-50"
+            >
+              {loading
+                ? "Processing..."
+                : isLogin
+                ? "Sing in"
+                : "Sign up"}
+            </button>
+
+            {/* Divider */}
+            <div className="relative my-2 text-center">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-[#e2e8f0]" />
+              </div>
+              <span className="relative bg-white px-3 text-xs text-[#94a3b8]">
+                Or
+              </span>
+            </div>
+
+            {/* Secondary Sign In with Other Button */}
+            <button
+              type="button"
+              onClick={() =>
+                toast("Alternative login options coming soon!", { icon: "✨" })
+              }
+              className="w-full py-3 border-2 border-[#1e293b] hover:bg-[#f8fafc] text-[#1e293b] font-semibold text-sm rounded-xl transition-all active:scale-[0.99]"
+            >
+              Sing in with other
+            </button>
+          </form>
+
+          {/* Bottom Toggle */}
+          <p className="text-xs sm:text-sm text-[#64748b] text-center mt-8">
+            {isLogin ? "Don't have an account? " : "Already have an account? "}
+            <button
+              type="button"
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-[#0066ff] hover:underline font-semibold focus:outline-none"
+            >
+              {isLogin ? "Sign Up" : "Sign In"}
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );

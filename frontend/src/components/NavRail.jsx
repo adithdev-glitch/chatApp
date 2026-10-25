@@ -32,7 +32,7 @@ const NavRail = ({ activeTab = "chat", setActiveTab }) => {
         <button
           onClick={() => setActiveTab?.("chat")}
           className="p-1 rounded-xl hover:scale-105 transition-transform duration-200 focus:outline-none"
-          title="Chathive"
+          title="HeyChat"
         >
           <ChathiveLogo className="w-10 h-10" color="#38bdf8" strokeWidth={5} />
         </button>

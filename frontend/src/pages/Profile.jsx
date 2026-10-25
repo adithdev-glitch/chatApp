@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Camera, LogOut, Save } from "lucide-react";
 import ChathiveLogo from "../components/ChathiveLogo.jsx";
+import { SERVER_URL } from "../library/constants";
 
 const Profile = () => {
   const { user, logout } = useContext(UserContext);
@@ -32,7 +33,7 @@ const Profile = () => {
       formData.append("name", name);
 
       const response = await axios.post(
-        "http://localhost:8080/api/user/update-profile",
+        `${SERVER_URL}/api/user/update-profile`,
         formData,
         {
           headers: {

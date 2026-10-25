@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { MsgContext } from "../context/msgContext";
+import { SERVER_URL } from "../library/constants";
 
 const MediaGallery = () => {
   const { selectedUser, user } = useContext(MsgContext);
@@ -13,7 +14,7 @@ const MediaGallery = () => {
 
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:8080/api/message/images/${selectedUser._id}`, {
+        const res = await axios.get(`${SERVER_URL}/api/message/images/${selectedUser._id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`, // or your auth header
           },
